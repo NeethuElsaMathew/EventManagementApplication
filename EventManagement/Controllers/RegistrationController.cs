@@ -1,5 +1,7 @@
 ﻿using EventManagement.Data;
 using EventManagement.Model;
+using EventManagement.Model.DTO;
+using EventManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +12,14 @@ namespace EventManagement.Controllers
     public class RegistrationController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly RegistrationService _registrationService;
+        private ResponseDTO _response;
 
-        public RegistrationController(ApplicationDbContext dbContext)
+        public RegistrationController(ApplicationDbContext dbContext, RegistrationService registrationService)
         {
             _dbContext = dbContext;
+            _registrationService = registrationService;
+            _response = new ResponseDTO();
         }
 
         [HttpPost]
@@ -21,40 +27,34 @@ namespace EventManagement.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddRegistrationForEvent([FromBody] Registration eventRegistration)
         {
-            if (!ModelState.IsValid)
+            var response = await _registrationService.AddRegistrationAsync(eventRegistration);
+
+            if (!response.IsSuccess)
             {
-                return BadRequest(ModelState);
+                return BadRequest(response);
             }
 
-            // Check if an event with this eventid is present
-            var ifexistingEvent = await _dbContext.Events.FirstOrDefaultAsync(e =>e.Id == eventRegistration.EventId);
+            return Ok(response);
 
-            if (ifexistingEvent == null)
-            {
-                return BadRequest("Event does not exist,hence cannot be added");
-            }
 
-            // Add the Registration to the database
-            _dbContext.Registration.Add(eventRegistration);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok("Registration added successfully");
         }
 
-        [HttpGet]
+        [HttpGet("events")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllEvents()
+        public async Task<ResponseDTO> GetAllEvents()
         {
             try
             {
                 var events = await _dbContext.Events.ToListAsync();
-                return Ok(events);
+                _response.Result = events;
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving data");
+                _response.IsSuccess = false;
+                _response.Message = $"Error retrieving data: {ex.Message}";
             }
+            return _response;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using EventManagement.Data;
 using Microsoft.EntityFrameworkCore;
+using EventManagement.Services;
 
 namespace EventManagement.Controllers
 {
@@ -15,65 +16,27 @@ namespace EventManagement.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _config;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly AuthService _authService;
 
-        public LoginController(IConfiguration config, ApplicationDbContext dbContext)
+        public LoginController(AuthService authService)
         {
-            _config = config;
-            _dbContext = dbContext;
+            _authService = authService;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        [ProducesResponseType(200, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Login([FromBody] LoginDTO userLogin)
         {
-            var user = await Authenticate(userLogin);
+            var token = await _authService.AuthenticateAsync(userLogin);
 
-            if (user != null)
+            if (token != null)
             {
-                var token = Generate(user);
                 return Ok(token);
             }
 
-            return NotFound("This user is not found");
-        }
-
-        private string Generate(User user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimTypes.Email, user.EmailAddress),
-                new Claim(ClaimTypes.GivenName, user.FirstName),
-                new Claim(ClaimTypes.Surname, user.LastName),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
-
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Audience"],
-              claims,
-              expires: DateTime.Now.AddMinutes(30),
-              signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private async Task<User> Authenticate(LoginDTO userLogin)
-        {
-            var currentUser = await _dbContext.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == userLogin.Username.ToLower() && u.Password == userLogin.Password);
-
-            if (currentUser != null)
-            {
-                return currentUser;
-            }
-
-            return null;
+            return NotFound("User not found or invalid credentials");
         }
     }
 }

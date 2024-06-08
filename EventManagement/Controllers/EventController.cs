@@ -1,8 +1,9 @@
 ﻿using EventManagement.Data;
 using EventManagement.Model;
+using EventManagement.Model.DTO;
+using EventManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventManagement.Controllers
 {
@@ -12,61 +13,54 @@ namespace EventManagement.Controllers
     public class EventController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly EventService _eventService;
+        private ResponseDTO _response;
 
-        public EventController(ApplicationDbContext dbContext)
+        public EventController(ApplicationDbContext dbContext, EventService eventService)
         {
             _dbContext = dbContext;
+            _eventService = eventService;
+            _response = new ResponseDTO();
+
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddEvent([FromBody] Event eventToCreate)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                _response.IsSuccess = false;
+                _response.Message = "Validation Errors";
             }
 
-            // Check if an event with the same properties already exists
-            var existingEvent = await _dbContext.Events.FirstOrDefaultAsync(e =>
-                e.Name == eventToCreate.Name &&
-                e.Description == eventToCreate.Description &&
-                e.Location == eventToCreate.Location &&
-                e.StartTime == eventToCreate.StartTime &&
-                e.EndTime == eventToCreate.EndTime);
+            var result = await _eventService.AddEventAsync(eventToCreate);
 
-            if (existingEvent != null)
+            if (!result.IsSuccess)
             {
-                return Conflict("Event already exists,hence cannot be added");
+                return BadRequest(result);
             }
 
-            _dbContext.Events.Add(eventToCreate);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok("Event added successfully");
+            return Ok(result);
         }
 
-        [HttpGet("{eventId}/registrations")]
+        [HttpGet("events/registrations/{eventId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetRegistrationsForEvent(int eventId)
         {
-            var eventExists = await _dbContext.Events.AnyAsync(e => e.Id == eventId);
 
-            if (!eventExists)
+            var response = await _eventService.GetRegistrationsForEventResponseAsync(eventId);
+
+            if (!response.IsSuccess)
             {
-                return NotFound("Event not found");
+                return NotFound(response);
             }
 
-            var registrations = await _dbContext.Registration
-                .Where(r => r.EventId == eventId)
-                .ToListAsync();
-
-            return Ok(registrations);
+            return Ok(response);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace EventManagement.Services
                 // Add the Registration to the database
                 _dbContext.Registration.Add(eventRegistration);
                 await _dbContext.SaveChangesAsync();
-
+                response.Result = eventRegistration;
                 response.Message = "Registration added successfully";
             }
             catch (Exception ex)

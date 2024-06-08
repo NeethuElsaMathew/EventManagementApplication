@@ -30,12 +30,6 @@ namespace EventManagement.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> AddEvent([FromBody] Event eventToCreate)
         {
-            if (!ModelState.IsValid)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Validation Errors";
-            }
-
             var result = await _eventService.AddEventAsync(eventToCreate);
 
             if (!result.IsSuccess)

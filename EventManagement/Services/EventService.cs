@@ -53,6 +53,7 @@ namespace EventManagement.Services
 
                 _dbContext.Events.Add(eventToCreate);
                 await _dbContext.SaveChangesAsync();
+                response.Result = eventToCreate;
                 response.Message = "Event added successfully";
 
 

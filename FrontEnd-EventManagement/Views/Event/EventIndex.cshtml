@@ -1,0 +1,55 @@
+﻿@model IEnumerable<EventDTO>
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="text-white">Events List</h1>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Location
+                    </th>
+                    <th>
+                        Start Time
+                    </th>
+                    <th>
+                        End Time
+                    </th>
+                    <th>
+                        Register
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td> @item.Name </td>
+                        <td> @item.Description </td>
+                        <td> @item.Location </td>
+                        <td> @item.StartTime </td>
+                        <td> @item.EndTime </td>
+                        <td>
+                            <a asp-action="EventRegistration" asp-route-eventId="@item.Id" class="btn btn-danger">
+                                <i class="bi bi-arrow-right-circle-fill"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

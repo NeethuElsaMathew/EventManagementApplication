@@ -12,6 +12,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Number</th>
                     <th>
                         Name
                     </th>
@@ -28,19 +29,24 @@
                 </tr>
             </thead>
             <tbody>
+                @{
+                    int recordNumber = 1;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td>@recordNumber</td>
                         <td> @item.Name </td>
                         <td> @item.PhoneNumber </td>
                         <td> @item.EmailAddress </td>
                         <td> @item.EventId </td>
                     </tr>
+                    recordNumber++;
                 }
             </tbody>
         </table>
-        <div class="col-5 offset-2">
-            <a asp-controller="Event" asp-action="ViewRegistrationAndCreateEvent" class="btn-primary btn form-control ">Back to List</a>
+        <div class="d-flex justify-content-center mt-3">
+            <a asp-controller="Event" asp-action="ViewRegistrationAndCreateEvent" class="btn-primary btn btn-sm form-control">Back to List</a>
         </div>
     </div>
 </div>

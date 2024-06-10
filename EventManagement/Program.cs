@@ -20,9 +20,15 @@ builder.Services.AddScoped<RegistrationService>();
 
 // Add JWT Authentication
 
-var secret= builder.Configuration.GetValue<string>("ApiSettings:Secret");
-var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
-var audience = builder.Configuration.GetValue<string>("ApiSettings:Audience");
+var settingsSection = builder.Configuration.GetSection("ApiSettings");
+
+var secret = settingsSection.GetValue<string>("Secret");
+var issuer = settingsSection.GetValue<string>("Issuer");
+var audience = settingsSection.GetValue<string>("Audience");
+
+//var secret= builder.Configuration.GetValue<string>("ApiSettings:Secret");
+//var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
+//var audience = builder.Configuration.GetValue<string>("ApiSettings:Audience");
 
 var key = Encoding.UTF8.GetBytes(secret);
 

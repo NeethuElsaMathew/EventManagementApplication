@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEnd-EventManagement", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{34904908-DB59-4F68-B3EC-E820B4E3FA2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementAuthAPI", "EventManagementAuthAPI\EventManagementAuthAPI.csproj", "{D1B94753-C190-4D55-B98E-C3364C34CD37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventManagementAuthAPI", "EventManagementAuthAPI\EventManagementAuthAPI.csproj", "{D1B94753-C190-4D55-B98E-C3364C34CD37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

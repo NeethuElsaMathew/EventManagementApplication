@@ -46,7 +46,7 @@ namespace FrontEnd_EventManagement.Service
             return await _baseService.SendAsync(new RequestDTO()
             {
                 ApiType = ApiType.ApiTypes.GET,
-                Url = ApiType.EventManagementAPI + "/api/Events/events/registrations/" +eventId
+                Url = ApiType.EventManagementAPI + "/api/Event/events/registrations/"+eventId
             });
         }
     }

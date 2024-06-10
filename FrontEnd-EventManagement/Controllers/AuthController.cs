@@ -40,7 +40,7 @@ namespace FrontEnd_EventManagement.Controllers
 
                 await SignInUser(loginResponseDto);
                 _tokenProvider.SetToken(loginResponseDto.Token);
-                return RedirectToAction("EventIndex", "Event");
+                return RedirectToAction("ViewRegistrationAndCreateEvent", "Event");
             }
             else
             {

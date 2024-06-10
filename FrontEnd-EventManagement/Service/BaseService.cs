@@ -10,10 +10,12 @@ namespace FrontEnd_EventManagement.Service
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public BaseService(IHttpClientFactory httpClientFactory)
+        private readonly ITokenProvider _tokenProvider;
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
             _httpClientFactory = httpClientFactory;
-        }
+            _tokenProvider = tokenProvider;
+        }   
 
         public async Task<ResponseDTO?> SendAsync(RequestDTO requestDto, bool withBearer = true)
         {
@@ -21,8 +23,13 @@ namespace FrontEnd_EventManagement.Service
             {
                 HttpClient client = _httpClientFactory.CreateClient("EventManagementAPI");
                 HttpRequestMessage message = new();
-                message.Headers.Add("Accept", "application/json");                
-                //token
+                message.Headers.Add("Accept", "application/json");
+
+                if (withBearer)
+                {
+                    var token = _tokenProvider.GetToken();
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
 
                 message.RequestUri = new Uri(requestDto.Url);
 

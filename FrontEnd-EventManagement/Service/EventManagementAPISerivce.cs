@@ -41,12 +41,12 @@ namespace FrontEnd_EventManagement.Service
             });
         }
 
-        public async Task<ResponseDTO?> GetAllRegistrationForEventAsync(int id)
+        public async Task<ResponseDTO?> GetAllRegistrationForEventAsync(int eventId)
         {
             return await _baseService.SendAsync(new RequestDTO()
             {
                 ApiType = ApiType.ApiTypes.GET,
-                Url = ApiType.EventManagementAPI + "/api/Events/events/registrations/" + id
+                Url = ApiType.EventManagementAPI + "/api/Events/events/registrations/" +eventId
             });
         }
     }

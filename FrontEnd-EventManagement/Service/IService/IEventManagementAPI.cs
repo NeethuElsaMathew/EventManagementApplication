@@ -6,7 +6,7 @@ namespace FrontEnd_EventManagement.Service.IService
     {
         Task<ResponseDTO?> GetAllEventsAsync();
         Task<ResponseDTO?> CreateRegistrationForEventsAsync(RegistrationDTO registrationDTO);
-        Task<ResponseDTO?> GetAllRegistrationForEventAsync(int id);
+        Task<ResponseDTO?> GetAllRegistrationForEventAsync(int eventId);
         Task<ResponseDTO?> CreateEventAsync(EventDTO eventDto);
     }
 }

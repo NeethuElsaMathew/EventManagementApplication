@@ -55,5 +55,23 @@ namespace FrontEnd_EventManagement.Controllers
             }
             return View(registrationDTO);
         }
+
+        public async Task<IActionResult> ViewRegistrationAndCreateEvent()
+        {
+            List<EventDTO>? list = new();
+
+            ResponseDTO? response = await _eventManagementAPI.GetAllEventsAsync();
+
+            if (response != null && response.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<List<EventDTO>>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+
+            return View(list);
+        }
     }
 }

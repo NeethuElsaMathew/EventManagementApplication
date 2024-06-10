@@ -50,7 +50,7 @@ namespace EventManagementAuthAPI.Service
                 return new LoginResponseDto() { User = null, Token = "" };
             }
 
-            //if user was found , Generate JWT Token
+            //Generate JWT Token if user found
             var roles = await _userManager.GetRolesAsync(user);
             var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
@@ -108,9 +108,9 @@ namespace EventManagementAuthAPI.Service
             }
             catch (Exception ex)
             {
-
+                return "Error Encountered";
             }
-            return "Error Encountered";
+          
         }
     }
 }

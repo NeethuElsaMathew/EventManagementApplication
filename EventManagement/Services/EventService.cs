@@ -58,10 +58,10 @@ namespace EventManagement.Services
 
 
             }
-            catch (Exception ex)
+            catch 
             {
                 response.IsSuccess = false;
-                response.Message = $"Error adding data: {ex.Message}";
+                response.Message = "Error adding data";
             }
             return response;
 
@@ -84,10 +84,10 @@ namespace EventManagement.Services
                 var registrations = await GetRegistrationsForEventAsync(eventId);
                 response.Result = registrations;
             }
-            catch (Exception ex)
+            catch 
             {
                 response.IsSuccess = false;
-                response.Message = $"Error retrieving data: {ex.Message}";
+                response.Message = "Error retrieving data";
             }
 
             return response;

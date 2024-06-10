@@ -9,12 +9,10 @@ namespace EventManagementAuthAPI.Controllers
     public class AuthAPIController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IConfiguration _configuration;
         protected ResponseDto _response;
         public AuthAPIController(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService;
-            _configuration = configuration;
             _response = new();
         }
 

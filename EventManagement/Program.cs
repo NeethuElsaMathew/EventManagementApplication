@@ -26,10 +26,6 @@ var secret = settingsSection.GetValue<string>("Secret");
 var issuer = settingsSection.GetValue<string>("Issuer");
 var audience = settingsSection.GetValue<string>("Audience");
 
-//var secret= builder.Configuration.GetValue<string>("ApiSettings:Secret");
-//var issuer = builder.Configuration.GetValue<string>("ApiSettings:Issuer");
-//var audience = builder.Configuration.GetValue<string>("ApiSettings:Audience");
-
 var key = Encoding.UTF8.GetBytes(secret);
 
 builder.Services.AddAuthentication(options =>

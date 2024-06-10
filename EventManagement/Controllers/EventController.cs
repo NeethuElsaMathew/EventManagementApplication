@@ -1,15 +1,16 @@
-﻿using EventManagement.Data;
+﻿using Azure;
+using EventManagement.Data;
 using EventManagement.Model;
 using EventManagement.Model.DTO;
 using EventManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventManagement.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Event")]
     [ApiController]
-    [Authorize(Roles = "EVENTCREATOR")]
     public class EventController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;
@@ -25,6 +26,7 @@ namespace EventManagement.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "EVENTCREATOR")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -40,7 +42,8 @@ namespace EventManagement.Controllers
             return Ok(result);
         }
 
-        [HttpGet("events/registrations/{eventId}")]
+        [HttpGet("registrations/{eventId}")]
+        [Authorize(Roles = "EVENTCREATOR")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -60,6 +63,24 @@ namespace EventManagement.Controllers
             }
 
             return Ok(response);
+        }
+
+        [HttpGet("all/events")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ResponseDTO> GetAllEvents()
+        {
+            try
+            {
+                var events = await _dbContext.Events.ToListAsync();
+                _response.Result = events;
+            }
+            catch 
+            {
+                _response.IsSuccess = false;
+                _response.Message = "Error retrieving data";
+            }
+            return _response;
         }
     }
 }

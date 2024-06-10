@@ -1,7 +1,6 @@
 ﻿using FrontEnd_EventManagement.Models;
 using FrontEnd_EventManagement.Service.IService;
 using FrontEnd_EventManagement.Utility;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace FrontEnd_EventManagement.Service
 {

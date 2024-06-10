@@ -5,9 +5,13 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventManagementAPI", "EventManagement\EventManagementAPI.csproj", "{785A3697-ADF2-4323-B7EA-0750BE23257F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd-EventManagement", "FrontEnd-EventManagement", "{7E3DC9B4-9E70-4F99-862A-5A46033FF685}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{7E3DC9B4-9E70-4F99-862A-5A46033FF685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontEnd-EventManagement", "FrontEnd-EventManagement\FrontEnd-EventManagement.csproj", "{9419F1AB-8283-4F2C-AB39-9D19A56388B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEnd-EventManagement", "FrontEnd-EventManagement\FrontEnd-EventManagement.csproj", "{9419F1AB-8283-4F2C-AB39-9D19A56388B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{34904908-DB59-4F68-B3EC-E820B4E3FA2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementAuthAPI", "EventManagementAuthAPI\EventManagementAuthAPI.csproj", "{D1B94753-C190-4D55-B98E-C3364C34CD37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +27,18 @@ Global
 		{9419F1AB-8283-4F2C-AB39-9D19A56388B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9419F1AB-8283-4F2C-AB39-9D19A56388B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9419F1AB-8283-4F2C-AB39-9D19A56388B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B94753-C190-4D55-B98E-C3364C34CD37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B94753-C190-4D55-B98E-C3364C34CD37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B94753-C190-4D55-B98E-C3364C34CD37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B94753-C190-4D55-B98E-C3364C34CD37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{785A3697-ADF2-4323-B7EA-0750BE23257F} = {34904908-DB59-4F68-B3EC-E820B4E3FA2D}
 		{9419F1AB-8283-4F2C-AB39-9D19A56388B9} = {7E3DC9B4-9E70-4F99-862A-5A46033FF685}
+		{D1B94753-C190-4D55-B98E-C3364C34CD37} = {34904908-DB59-4F68-B3EC-E820B4E3FA2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7D396339-7FE2-47BC-A19F-DB5351FB72B6}

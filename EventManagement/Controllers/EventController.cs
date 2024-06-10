@@ -9,7 +9,7 @@ namespace EventManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "EventCreator")]
+    [Authorize(Roles = "EVENTCREATOR")]
     public class EventController : ControllerBase
     {
         private readonly ApplicationDbContext _dbContext;

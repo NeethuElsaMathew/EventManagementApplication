@@ -73,5 +73,30 @@ namespace FrontEnd_EventManagement.Controllers
 
             return View(list);
         }
+
+        public async Task<IActionResult> CreateEvent()
+        {
+            return View();
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateEvent(EventDTO eventDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                ResponseDTO? response = await _eventManagementAPI.CreateEventAsync(eventDTO);
+
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Event created successfully";
+                    return RedirectToAction(nameof(EventIndex));
+                }
+                else
+                {
+                    TempData["error"] = response?.Message;
+                }
+            }
+            return View(eventDTO);
+        }
     }
 }

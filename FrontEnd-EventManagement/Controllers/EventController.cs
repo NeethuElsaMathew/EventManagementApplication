@@ -99,7 +99,7 @@ namespace FrontEnd_EventManagement.Controllers
                 if (response != null && response.IsSuccess)
                 {
                     TempData["success"] = "Event created successfully";
-                    return RedirectToAction(nameof(EventIndex));
+                    return RedirectToAction(nameof(ViewRegistrationAndCreateEvent));
                 }
                 else
                 {

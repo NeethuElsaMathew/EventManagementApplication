@@ -58,6 +58,11 @@ namespace FrontEnd_EventManagement.Controllers
 
         public async Task<IActionResult> ViewRegistrationAndCreateEvent()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View("~/Views/Shared/Unauthorized.cshtml");
+            }
+
             List<EventDTO>? list = new();
 
             ResponseDTO? response = await _eventManagementAPI.GetAllEventsAsync();
@@ -76,6 +81,11 @@ namespace FrontEnd_EventManagement.Controllers
 
         public async Task<IActionResult> CreateEvent()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View("~/Views/Shared/Unauthorized.cshtml");
+            }
+
             return View();
 
         }

@@ -14,6 +14,11 @@ namespace FrontEnd_EventManagement.Controllers
         }
         public async Task<IActionResult> RegistrationList(int eventId)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View("~/Views/Shared/Unauthorized.cshtml");
+            }
+
             List<RegistrationDTO>? list = new();
 
             ResponseDTO? response = await _eventManagementAPI.GetAllRegistrationForEventAsync(eventId);

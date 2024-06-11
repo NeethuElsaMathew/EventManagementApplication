@@ -23,7 +23,7 @@ namespace EventManagement.Services
                 if (eventToCreate.StartTime <= DateTime.Now || eventToCreate.EndTime <= DateTime.Now)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Event starttime or endtime should be in future";
+                    response.Message = "Event start time or end time should be in future";
                     return response;
                 }
 

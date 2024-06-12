@@ -83,6 +83,7 @@ namespace EventManagement.Services
 
                 var registrations = await GetRegistrationsForEventAsync(eventId);
                 response.Result = registrations;
+                response.Message = "Data retrieved added successfully";
             }
             catch 
             {

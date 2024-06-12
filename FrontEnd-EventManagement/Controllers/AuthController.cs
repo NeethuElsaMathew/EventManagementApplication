@@ -29,9 +29,9 @@ namespace FrontEnd_EventManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginRequestDto obj)
+        public async Task<IActionResult> Login(LoginRequestDto loginObj)
         {
-            ResponseDTO responseDto = await _authService.LoginAsync(obj);
+            ResponseDTO responseDto = await _authService.LoginAsync(loginObj);
 
             if (responseDto != null && responseDto.IsSuccess)
             {
@@ -45,7 +45,7 @@ namespace FrontEnd_EventManagement.Controllers
             else
             {
                 TempData["error"] = responseDto.Message;
-                return View(obj);
+                return View(loginObj);
             }
         }
 
@@ -70,14 +70,10 @@ namespace FrontEnd_EventManagement.Controllers
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub).Value));
             identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name).Value));
-
-
             identity.AddClaim(new Claim(ClaimTypes.Name,
                 jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
             identity.AddClaim(new Claim(ClaimTypes.Role,
                 jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
-
-
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);

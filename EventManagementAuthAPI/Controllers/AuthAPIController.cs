@@ -16,23 +16,25 @@ namespace EventManagementAuthAPI.Controllers
             _response = new();
         }
 
-
-
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto model)
         {
 
-            var errorMessage = await _authService.Register(model);
-            if (!string.IsNullOrEmpty(errorMessage))
+            var responseMessage = await _authService.Register(model);
+            if (!string.IsNullOrEmpty(responseMessage))
             {
                 _response.IsSuccess = false;
-                _response.Message = errorMessage;
+                _response.Message = responseMessage;
                 return BadRequest(_response);
             }
             return Ok(_response);
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
             var loginResponse = await _authService.Login(model);
@@ -46,21 +48,5 @@ namespace EventManagementAuthAPI.Controllers
             return Ok(_response);
 
         }
-
-        [HttpPost("AssignRole")]
-        public async Task<IActionResult> AssignRole([FromBody] RegistrationRequestDto model)
-        {
-            var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
-            if (!assignRoleSuccessful)
-            {
-                _response.IsSuccess = false;
-                _response.Message = "Error encountered";
-                return BadRequest(_response);
-            }
-            return Ok(_response);
-
-        }
-
-
     }
 }

@@ -62,10 +62,10 @@ namespace EventManagement.Services
                 response.Result = eventRegistration;
                 response.Message = "Registration added successfully";
             }
-            catch (Exception ex)
+            catch
             {
                 response.IsSuccess = false;
-                response.Message = $"Error adding data: {ex.Message}";
+                response.Message = "Error adding registration";
             }
 
             return response;

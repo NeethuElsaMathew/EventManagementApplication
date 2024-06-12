@@ -2,7 +2,6 @@
 using EventManagementAuthAPI.Model;
 using EventManagementAuthAPI.Service.IService;
 using Microsoft.AspNetCore.Identity;
-using System;
 using EventManagementAuthAPI.Data;
 
 namespace EventManagementAuthAPI.Service
@@ -23,22 +22,6 @@ namespace EventManagementAuthAPI.Service
             _roleManager = roleManager;
         }
 
-        public async Task<bool> AssignRole(string email, string roleName)
-        {
-            var user = _db.ApplicationUsers.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
-            if (user != null)
-            {
-                if (!_roleManager.RoleExistsAsync(roleName).GetAwaiter().GetResult())
-                {
-                    _roleManager.CreateAsync(new IdentityRole(roleName)).GetAwaiter().GetResult();
-                }
-                await _userManager.AddToRoleAsync(user, roleName);
-                return true;
-            }
-            return false;
-
-        }
-
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
             var user = _db.ApplicationUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDto.UserName.ToLower());
@@ -50,7 +33,6 @@ namespace EventManagementAuthAPI.Service
                 return new LoginResponseDto() { User = null, Token = "" };
             }
 
-            //Generate JWT Token if user found
             var roles = await _userManager.GetRolesAsync(user);
             var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
@@ -87,15 +69,13 @@ namespace EventManagementAuthAPI.Service
                 var result = await _userManager.CreateAsync(user, registrationRequestDto.Password);
                 if (result.Succeeded)
                 {
-                    var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
+                    var userCreated = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
 
-                    UserDto userDto = new()
+                    if (!_roleManager.RoleExistsAsync(registrationRequestDto.Role.ToUpper()).GetAwaiter().GetResult())
                     {
-                        Email = userToReturn.Email,
-                        ID = userToReturn.Id,
-                        Name = userToReturn.Name,
-                        PhoneNumber = userToReturn.PhoneNumber
-                    };
+                        _roleManager.CreateAsync(new IdentityRole(registrationRequestDto.Role.ToUpper())).GetAwaiter().GetResult();
+                    }
+                    await _userManager.AddToRoleAsync(userCreated, registrationRequestDto.Role.ToUpper());
 
                     return "";
 
